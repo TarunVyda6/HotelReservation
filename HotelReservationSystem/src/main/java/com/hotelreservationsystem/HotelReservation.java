@@ -1,5 +1,6 @@
 package com.hotelreservationsystem;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 public class HotelReservation {
 
 	Hotel LakeWood = new Hotel("Lakewood", 110, 90);
-	Hotel BridgeWood = new Hotel("Bridgewood", 160, 50);
+	Hotel BridgeWood = new Hotel("Bridgewood", 150, 50);
 	Hotel RidgeWood = new Hotel("Ridgewood", 220, 150);
 
 	List<Hotel> hotelList = new ArrayList<Hotel>();
@@ -35,12 +36,66 @@ public class HotelReservation {
 	public Hotel cheapestHotelOfWeekDayRates(String checkInDate, String checkOutDate) {
 
 		int noOfDays = getTotalDays(checkInDate, checkOutDate);
+		int weekEndDays = getWeekEndDays(checkInDate, checkOutDate);
 		List<Integer> price = hotelList.parallelStream().map(hotel -> hotel.getWeekDayRatesForRegular() * noOfDays)
 				.collect(Collectors.toList());
 		int minPrice = Collections.min(price);
-		return hotelList.parallelStream().filter(hotel -> hotel.getWeekDayRatesForRegular() * noOfDays == minPrice).findFirst()
-				.orElse(null);
+		return hotelList.parallelStream().filter(hotel -> hotel.getWeekDayRatesForRegular() * noOfDays == minPrice)
+				.findFirst().orElse(null);
 
+	}
+
+	/**
+	 * @param startDate
+	 * @param endDate
+	 * @return list of cheapest hotels of given date range
+	 */
+	public List<String> cheapestHotelOfBothWeekDayAndWeekendRates(String startDate, String endDate) {
+		int days = getTotalDays(startDate, endDate);
+		int weekends = getWeekEndDays(startDate, endDate);
+		int weekdays = days - weekends;
+		List<Integer> price = hotelList.stream().map(hotel -> totalPrice(hotel, weekends, weekdays))
+				.collect(Collectors.toList());
+		int minPrice = Collections.min(price);
+		List<String> cheapestHotelList = hotelList.stream()
+				.filter(hotel -> totalPrice(hotel, weekends, weekdays) == minPrice).map(hotel -> hotel.getName())
+				.collect(Collectors.toList());
+		for (String hotel : cheapestHotelList)
+			System.out.println("Cheapest hotel: " + hotel + " cost: " + minPrice);
+		return cheapestHotelList;
+	}
+
+	/**
+	 * @param hotel
+	 * @param weekends
+	 * @param weekdays
+	 * @return total price of a hotel in the given date range
+	 */
+	public int totalPrice(Hotel hotel, int weekends, int weekdays) {
+		return hotel.getWeekDayRatesForRegular() * weekdays + hotel.getWeekEndRatesForRegular() * weekends;
+	}
+
+	/**
+	 * @param checkInDate
+	 * @param checkOutDate
+	 * @return week end days
+	 */
+	private int getWeekEndDays(String checkInDate, String checkOutDate) {
+
+		int totalDays = getTotalDays(checkInDate, checkOutDate);
+		int weekends = 0;
+
+		for (int i = 0; i < totalDays; i++) {
+
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
+			LocalDate currentDate = LocalDate.parse(checkInDate, dateTimeFormatter);
+			LocalDate date = currentDate.plusDays(i);
+			DayOfWeek day = date.getDayOfWeek();
+			if (day == DayOfWeek.SUNDAY || day == DayOfWeek.SATURDAY) {
+				weekends++;
+			}
+		}
+		return weekends;
 	}
 
 	/**
