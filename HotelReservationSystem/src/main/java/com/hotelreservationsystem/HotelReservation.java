@@ -38,7 +38,6 @@ public class HotelReservation {
 	public Hotel cheapestHotelOfWeekDayRates(String checkInDate, String checkOutDate) {
 
 		int noOfDays = getTotalDays(checkInDate, checkOutDate);
-		int weekEndDays = getWeekEndDays(checkInDate, checkOutDate);
 		List<Integer> price = hotelList.parallelStream().map(hotel -> hotel.getWeekDayRatesForRegular() * noOfDays)
 				.collect(Collectors.toList());
 		int minPrice = Collections.min(price);
@@ -70,7 +69,7 @@ public class HotelReservation {
 	/**
 	 * @param startDate
 	 * @param endDate
-	 * @return cheapest and best rated hotel for regular between given dates
+	 * @return cheapest and best rated hotel for regular between given date range
 	 */
 	public String cheapestBestRatedHotelForRegulars(String startDate, String endDate) {
 		int days = getTotalDays(startDate, endDate);
@@ -85,6 +84,22 @@ public class HotelReservation {
 				.orElseThrow(NoSuchElementException::new);
 		System.out
 				.println("Cheapest hotel: " + hotel.getName() + " Rating: " + hotel.getRating() + " cost: " + minPrice);
+		return hotel.getName();
+	}
+
+	/**
+	 * @param startDate
+	 * @param endDate
+	 * @return best rated hotel for regular between given date range
+	 */
+	public String bestRatedHotelForRegulars(String startDate, String endDate) {
+		int days = getTotalDays(startDate, endDate);
+		int weekends = getWeekEndDays(startDate, endDate);
+		int weekdays = days - weekends;
+		Hotel hotel = hotelList.stream().max(Comparator.comparing(Hotel::getRating))
+				.orElseThrow(NoSuchElementException::new);
+		int price = totalPrice(hotel, weekends, weekdays);
+		System.out.println("Hotel: " + hotel.getName() + " ratings: " + hotel.getRating() + " cost: " + price);
 		return hotel.getName();
 	}
 

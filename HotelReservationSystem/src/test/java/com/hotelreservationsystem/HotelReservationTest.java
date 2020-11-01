@@ -42,9 +42,16 @@ public class HotelReservationTest {
 	}
 
 	@Test
-	public void findCheapestBestRatedHotelForRewardsCustomer() {
+	public void givenDateRangeForCheapestAndBestRatedHotel_WhenAnalyse_ShouldReturnHotelName() {
 		HotelReservation hotelReservationMain = new HotelReservation();
 		String hotel = hotelReservationMain.cheapestBestRatedHotelForRegulars("11Sep2020", "12Sep2020");
 		Assert.assertEquals("Bridgewood", hotel);
+	}
+
+	@Test
+	public void givenDateRangeForBestRatedHotel_WhenAnalyse_ShouldReturnHotelName() {
+		HotelReservation hotelReservationMain = new HotelReservation();
+		String hotel = hotelReservationMain.bestRatedHotelForRegulars("11Sep2020", "12Sep2020");
+		Assert.assertEquals("Ridgewood", hotel);
 	}
 }
