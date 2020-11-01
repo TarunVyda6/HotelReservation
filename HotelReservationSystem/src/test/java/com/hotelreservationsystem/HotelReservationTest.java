@@ -40,4 +40,11 @@ public class HotelReservationTest {
 		Assert.assertEquals(expectedList, actualList);
 
 	}
+
+	@Test
+	public void findCheapestBestRatedHotelForRewardsCustomer() {
+		HotelReservation hotelReservationMain = new HotelReservation();
+		String hotel = hotelReservationMain.cheapestBestRatedHotelForRegulars("11Sep2020", "12Sep2020");
+		Assert.assertEquals("Bridgewood", hotel);
+	}
 }

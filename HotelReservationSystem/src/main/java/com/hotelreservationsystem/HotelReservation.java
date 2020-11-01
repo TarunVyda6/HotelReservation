@@ -6,7 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 public class HotelReservation {
@@ -63,6 +65,27 @@ public class HotelReservation {
 		for (String hotel : cheapestHotelList)
 			System.out.println("Cheapest hotel: " + hotel + " cost: " + minPrice);
 		return cheapestHotelList;
+	}
+
+	/**
+	 * @param startDate
+	 * @param endDate
+	 * @return cheapest and best rated hotel for regular between given dates
+	 */
+	public String cheapestBestRatedHotelForRegulars(String startDate, String endDate) {
+		int days = getTotalDays(startDate, endDate);
+		int weekends = getWeekEndDays(startDate, endDate);
+		int weekdays = days - weekends;
+		List<Integer> price = hotelList.stream().map(hotel -> totalPrice(hotel, weekends, weekdays))
+				.collect(Collectors.toList());
+		int minPrice = Collections.min(price);
+		List<Hotel> cheapestHotelList = hotelList.stream()
+				.filter(hotel -> totalPrice(hotel, weekends, weekdays) == minPrice).collect(Collectors.toList());
+		Hotel hotel = cheapestHotelList.stream().max(Comparator.comparing(Hotel::getRating))
+				.orElseThrow(NoSuchElementException::new);
+		System.out
+				.println("Cheapest hotel: " + hotel.getName() + " Rating: " + hotel.getRating() + " cost: " + minPrice);
+		return hotel.getName();
 	}
 
 	/**
