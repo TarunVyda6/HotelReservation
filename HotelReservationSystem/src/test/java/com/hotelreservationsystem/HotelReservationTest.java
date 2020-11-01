@@ -65,4 +65,15 @@ public class HotelReservationTest {
 		String hotel = hotelReservationMain.cheapestBestRatedHotelForRewardCustomer("11Sep2020", "12Sep2020");
 		Assert.assertEquals("Ridgewood", hotel);
 	}
+
+	@Test
+	public void givenInvalidDate_WhenAnalyse_ShouldReturnMessage() {
+		HotelReservation hotelReservationMain = new HotelReservation();
+		try {
+			hotelReservationMain.bestRatedHotelForRegulars("10092020", "12Sep20");
+		} catch (Exception e) {
+			Assert.assertEquals("Text '10092020' could not be parsed at index 2", e.getMessage());
+		}
+	}
+
 }
