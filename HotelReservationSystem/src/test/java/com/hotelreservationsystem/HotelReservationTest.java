@@ -1,5 +1,6 @@
 package com.hotelreservationsystem;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,7 @@ public class HotelReservationTest {
 	 * returns the cheapest hotel
 	 */
 	@Test
-	public void givenDateRangeOfWeekDays_WhenAnalyse_ShouldReturnCheapestHotelName() {
+	public void givenDateRangeOfWeekDays_WhenAnalyse_ShouldReturnCheapestHotelName() throws ParseException {
 
 		HotelReservation hotelReservation = new HotelReservation();
 		Hotel cheapestHotel = hotelReservation.cheapestHotelOfWeekDayRates("10Sep2020", "11Sep2020");
@@ -31,7 +32,7 @@ public class HotelReservationTest {
 	 * week days and weekend days and returns hotels names
 	 */
 	@Test
-	public void givenDateRangeOfWeekDaysAndWeekend_WhenAnalyse_ShouldReturnCheapestHotelName() {
+	public void givenDateRangeOfWeekDaysAndWeekend_WhenAnalyse_ShouldReturnCheapestHotelName() throws ParseException {
 
 		HotelReservation hotelReservation = new HotelReservation();
 		List<String> actualList = hotelReservation.cheapestHotelOfBothWeekDayAndWeekendRates("11Sep2020", "12Sep2020");
@@ -42,16 +43,26 @@ public class HotelReservationTest {
 	}
 
 	@Test
-	public void givenDateRangeForCheapestAndBestRatedHotelForRegularCustomer_WhenAnalyse_ShouldReturnHotelName() {
+	public void givenDateRangeForCheapestAndBestRatedHotelForRegularCustomer_WhenAnalyse_ShouldReturnHotelName()
+			throws ParseException {
 		HotelReservation hotelReservationMain = new HotelReservation();
 		String hotel = hotelReservationMain.cheapestBestRatedHotelForRegulars("11Sep2020", "12Sep2020");
 		Assert.assertEquals("Bridgewood", hotel);
 	}
 
 	@Test
-	public void givenDateRangeForBestRatedHotelForRegularCustomer_WhenAnalyse_ShouldReturnHotelName() {
+	public void givenDateRangeForBestRatedHotelForRegularCustomer_WhenAnalyse_ShouldReturnHotelName()
+			throws ParseException {
 		HotelReservation hotelReservationMain = new HotelReservation();
 		String hotel = hotelReservationMain.bestRatedHotelForRegulars("11Sep2020", "12Sep2020");
+		Assert.assertEquals("Ridgewood", hotel);
+	}
+
+	@Test
+	public void givenDateRangeForCheapestAndBestRatedHotelForRewardCustomer_WhenAnalyse_ShouldReturnHotelName()
+			throws ParseException {
+		HotelReservation hotelReservationMain = new HotelReservation();
+		String hotel = hotelReservationMain.cheapestBestRatedHotelForRewardCustomer("11Sep2020", "12Sep2020");
 		Assert.assertEquals("Ridgewood", hotel);
 	}
 }
