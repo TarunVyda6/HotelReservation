@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 
 public class HotelReservation {
 
-	Hotel LakeWood = new Hotel("Lakewood", 110);
-	Hotel BridgeWood = new Hotel("Bridgewood", 160);
-	Hotel RidgeWood = new Hotel("Ridgewood", 220);
+	Hotel LakeWood = new Hotel("Lakewood", 110, 90);
+	Hotel BridgeWood = new Hotel("Bridgewood", 160, 50);
+	Hotel RidgeWood = new Hotel("Ridgewood", 220, 150);
 
 	List<Hotel> hotelList = new ArrayList<Hotel>();
 
@@ -38,7 +38,7 @@ public class HotelReservation {
 		List<Integer> price = hotelList.parallelStream().map(hotel -> hotel.getWeekDayRatesForRegular() * noOfDays)
 				.collect(Collectors.toList());
 		int minPrice = Collections.min(price);
-		return hotelList.stream().filter(hotel -> hotel.getWeekDayRatesForRegular() * noOfDays == minPrice).findFirst()
+		return hotelList.parallelStream().filter(hotel -> hotel.getWeekDayRatesForRegular() * noOfDays == minPrice).findFirst()
 				.orElse(null);
 
 	}

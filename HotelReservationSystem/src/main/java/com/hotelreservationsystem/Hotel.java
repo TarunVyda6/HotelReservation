@@ -4,15 +4,17 @@ public class Hotel {
 
 	private String name;
 	private int weekDayRatesForRegular;
+	private int weekEndRatesForRegular;
 
 	/**
 	 * @param name
 	 * @param weekDayRatesForRegular
 	 */
-	public Hotel(String name, int weekDayRatesForRegular) {
+	public Hotel(String name, int weekDayRatesForRegular, int weekEndRatesForRegular) {
 		super();
 		this.name = name;
 		this.weekDayRatesForRegular = weekDayRatesForRegular;
+		this.weekEndRatesForRegular = weekEndRatesForRegular;
 	}
 
 	public String getName() {
@@ -29,6 +31,14 @@ public class Hotel {
 
 	public void setWeekDayRatesForRegular(int weekDayRates) {
 		this.weekDayRatesForRegular = weekDayRates;
+	}
+
+	public int getWeekEndRatesForRegular() {
+		return weekEndRatesForRegular;
+	}
+
+	public void setWeekEndRatesForRegular(int weekEndRatesForRegular) {
+		this.weekEndRatesForRegular = weekEndRatesForRegular;
 	}
 
 }
