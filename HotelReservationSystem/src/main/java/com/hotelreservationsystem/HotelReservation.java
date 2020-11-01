@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 public class HotelReservation {
 
-	Hotel LakeWood = new Hotel("Lakewood", 110, 90, 3);
-	Hotel BridgeWood = new Hotel("Bridgewood", 150, 50, 4);
-	Hotel RidgeWood = new Hotel("Ridgewood", 220, 150, 5);
+	Hotel LakeWood = new Hotel("Lakewood", 110, 90, 80, 80, 3);
+	Hotel BridgeWood = new Hotel("Bridgewood", 150, 50, 110, 50, 4);
+	Hotel RidgeWood = new Hotel("Ridgewood", 220, 150, 100, 40, 5);
 
 	List<Hotel> hotelList = new ArrayList<Hotel>();
 
